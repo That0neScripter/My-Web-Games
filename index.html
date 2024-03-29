@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Paper Scissors</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+        color: white;
+    }
+    .choices {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+    .result {
+        font-size: 24px;
+        margin-top: 20px;
+    }
+    .score {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        animation: rainbow 3s linear infinite;
+    }
+    @keyframes rainbow {
+        0% { color: red; }
+        14% { color: orange; }
+        28% { color: yellow; }
+        42% { color: green; }
+        57% { color: blue; }
+        71% { color: indigo; }
+        85% { color: violet; }
+        100% { color: red; }
+    }
+    .stickman, .cyborg {
+        display: none;
+        font-size: 72px;
+    }
+    .shop {
+        margin-top: 20px;
+    }
+    .item {
+        display: inline-block;
+        margin: 0 10px;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<h1>Rock Paper Scissors</h1>
+
+<div class="choices">
+    <button onclick="playGame('rock')">Rock</button>
+    <button onclick="playGame('paper')">Paper</button>
+    <button onclick="playGame('scissors')">Scissors</button>
+</div>
+
+<div class="result" id="result"></div>
+
+<div class="score" id="score">Score: 0</div>
+
+<div class="stickman" id="stickman">🚶</div>
+<div class="cyborg" id="cyborg">🤖</div>
+
+<div class="shop">
+    <div class="item" onclick="buyPowerUp('extraLife')">Extra Life (10 points)</div>
+    <div class="item" onclick="buyPowerUp('doublePoints')">Double Points (15 points)</div>
+</div>
+
+<script>
+var score = 0;
+var extraLives = 0;
+var doublePoints = 0;
+
+function playGame(userChoice) {
+    var choices = ['rock', 'paper', 'scissors'];
+    var computerChoice = choices[Math.floor(Math.random() * 3)];
+    var result;
+
+    if (userChoice === computerChoice) {
+        result = "It's a tie!";
+    } else if ((userChoice === 'rock' && computerChoice === 'scissors') ||
+               (userChoice === 'paper' && computerChoice === 'rock') ||
+               (userChoice === 'scissors' && computerChoice === 'paper')) {
+        result = "You win!";
+        score++;
+        if (doublePoints > 0) {
+            score++;
+        }
+    } else {
+        result = "Computer wins!";
+        score--;
+        if (extraLives > 0) {
+            extraLives--;
+        }
+    }
+
+    document.getElementById("result").innerHTML = "You chose " + userChoice + ". Computer chose " + computerChoice + ". " + result;
+    document.getElementById("score").innerHTML = "Score: " + score;
+}
+
+function buyPowerUp(powerUp) {
+    if (powerUp === 'extraLife' && score >= 10) {
+        extraLives++;
+        score -= 10;
+    } else if (powerUp === 'doublePoints' && score >= 15) {
+        doublePoints++;
+        score -= 15;
+    }
+    document.getElementById("score").innerHTML = "Score: " + score;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flying Plane Game</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background-image: url('why-is-sky-blue.jpg');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        position: relative; /* Needed for absolute positioning of elements */
+    }
+    #plane {
+        width: 200px; /* Adjust size as needed */
+        height: auto;
+        position: absolute;
+        animation: fly 8s linear infinite;
+    }
+    #counter {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 24px;
+        color: white;
+    }
+    #title-text {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        font-family: 'Mojangles', cursive; /* Mojangles font */
+        font-size: 24px;
+        animation: rainbow 5s linear infinite; /* Rainbow animation */
+    }
+    @keyframes fly {
+        0% { left: -200px; }
+        100% { left: calc(100% + 200px); }
+    }
+    @keyframes shake {
+        0% { transform: translateX(0) scale(1); }
+        25% { transform: translateX(-5px) rotate(-2deg) scale(1.1); }
+        50% { transform: translateX(5px) rotate(2deg) scale(1.1); }
+        75% { transform: translateX(-5px) rotate(-2deg) scale(1.1); }
+        100% { transform: translateX(0) scale(1); }
+    }
+    @keyframes zoomIn {
+        0% { transform: scale(1); }
+        100% { transform: scale(10); }
+    }
+    @font-face {
+        font-family: 'Mojangles';
+        src: url('mojangles.ttf') format('truetype'); /* Path to your Mojangles font file */
+    }
+    @keyframes rainbow {
+        0% { color: red; }
+        16.67% { color: orange; }
+        33.33% { color: yellow; }
+        50% { color: green; }
+        66.67% { color: blue; }
+        83.33% { color: indigo; }
+        100% { color: violet; }
+    }
+</style>
+</head>
+<body>
+<img id="plane" src="png-clipart-airplane-drawing-planes-angle-white.png" alt="plane">
+<div id="counter">Angry Faces: <span id="angryCounter">0</span></div>
+<div id="title-text">Plane Simulator Real!1!</div>
+<script>
+    var plane = document.getElementById('plane');
+    var counter = document.getElementById('angryCounter');
+    var angryFaceCount = 0;
+
+    plane.addEventListener('animationiteration', function() {
+        // Generate a random number between 0 and 1
+        var random = Math.random();
+        if (random < 0.5) {
+            // Shake the plane violently
+            plane.style.animation = 'shake 0.5s ease-in-out 1';
+            // After shaking, change the image to angry emoji and apply zoom-in effect
+            setTimeout(function() {
+                plane.src = 'angry_emoji_face_800_wht.jpg';
+                plane.style.animation = 'zoomIn 0.2s forwards'; // Zoom-in animation
+                // Increment angry face counter
+                angryFaceCount++;
+                counter.textContent = angryFaceCount;
+                // After zooming in, reset the animation and image to normal
+                setTimeout(function() {
+                    plane.src = 'png-clipart-airplane-drawing-planes-angle-white.png';
+                    plane.style.animation = 'fly 8s linear infinite'; // Reset fly animation
+                }, 200); // Adjust timing as needed
+            }, 500); // 500ms delay to start changing the image after shaking
+        }
+    });
+</script>
+</body>
+</html>

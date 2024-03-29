@@ -1,0 +1,28 @@
+<!-- Client (HTML/JavaScript) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiplayer Fake Money Game</title>
+</head>
+<body>
+
+<p>Your fake money: $<span id="money">50000000</span></p>
+<button onclick="buyItem(1000000)">Buy $1,000,000 Item</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  socket.on('money', (money) => {
+    document.getElementById('money').innerText = money.toLocaleString();
+  });
+
+  function buyItem(price) {
+    socket.emit('buyItem', price);
+  }
+</script>
+
+</body>
+</html>

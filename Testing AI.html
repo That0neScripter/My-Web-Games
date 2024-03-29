@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Clicker Game</title>
+<style>
+    body {
+        background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    .cookie {
+        width: 100px;
+        height: 100px;
+        margin-top: 100px;
+        cursor: pointer;
+    }
+    .cookie:hover {
+        transform: scale(1.1);
+    }
+    #score {
+        font-size: 24px;
+        color: white;
+    }
+    #upgrades {
+        margin-top: 20px;
+    }
+    .upgrade {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px;
+        background-color: #ffa500;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .upgrade:hover {
+        background-color: #ffcc00;
+    }
+    #leaderboard {
+        text-align: left;
+        margin: 20px auto;
+        max-width: 400px;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+    }
+    #leaderboard h2 {
+        margin-top: 0;
+    }
+</style>
+</head>
+<body>
+    <div id="score">Cookies: <span id="cookieCount">0</span></div>
+    <img src="chocolate-chip-cookie-bakery-baking-soft-cookies.jpg" alt="cookie" id="cookie1" class="cookie">
+    <div id="upgrades">
+        <div class="upgrade" id="upgrade1">Upgrade 1: Faster Clicks (Cost: 10)</div>
+        <div class="upgrade" id="upgrade2">Upgrade 2: Double Clicks (Cost: 50)</div>
+    </div>
+    <button id="saveButton">Save Data</button>
+    <button id="cookieRainButton">Make it Rain Cookies</button>
+    <button id="openYouTubeButton">Open YouTube</button>
+    <div id="leaderboard">
+        <h2>Leaderboard</h2>
+        <ol id="leaderList">
+            <!-- Leaderboard entries will be added here -->
+        </ol>
+    </div>
+<script>
+    let cookieCount = 0;
+    let clickValue = 1;
+
+    const cookie1 = document.getElementById('cookie1');
+    const cookieCountDisplay = document.getElementById('cookieCount');
+    const leaderList = document.getElementById('leaderList');
+
+    cookie1.addEventListener('click', () => {
+        cookieCount += clickValue;
+        updateCookieCount();
+    });
+
+    function updateCookieCount() {
+        cookieCountDisplay.textContent = cookieCount;
+    }
+
+    const upgrades = [
+        { id: 'upgrade1', cost: 10, effect: () => { clickValue *= 2; } },
+        { id: 'upgrade2', cost: 50, effect: () => { clickValue *= 3; } }
+    ];
+
+    upgrades.forEach(upgrade => {
+        const upgradeElement = document.getElementById(upgrade.id);
+        upgradeElement.addEventListener('click', () => {
+            if (cookieCount >= upgrade.cost) {
+                cookieCount -= upgrade.cost;
+                upgrade.effect();
+                upgradeElement.textContent = upgradeElement.textContent.replace(/\d+/, upgrade.cost * 2);
+                updateCookieCount();
+            } else {
+                alert("Not enough cookies!");
+            }
+        });
+    });
+
+    document.getElementById('saveButton').addEventListener('click', () => {
+        localStorage.setItem('cookieCount', cookieCount);
+        alert('Data saved!');
+    });
+
+    document.getElementById('cookieRainButton').addEventListener('click', () => {
+        makeCookieRain();
+    });
+
+    document.getElementById('openYouTubeButton').addEventListener('click', () => {
+        openYouTubeRepeatedly();
+    });
+
+    function makeCookieRain() {
+        const container = document.createElement('div');
+        container.style.position = 'absolute';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        container.style.pointerEvents = 'none';
+        document.body.appendChild(container);
+
+        for (let i = 0; i < 100; i++) {
+            const cookieRain = document.createElement('span');
+            cookieRain.innerHTML = '🍪';
+            cookieRain.style.position = 'absolute';
+            cookieRain.style.left = `${Math.random() * 100}vw`;
+            cookieRain.style.animation = `cookieFall ${(Math.random() * 2) + 1}s linear infinite`;
+            container.appendChild(cookieRain);
+            setTimeout(() => {
+                container.removeChild(cookieRain);
+            }, 3000);
+        }
+    }
+
+    function openYouTubeRepeatedly() {
+        setInterval(() => {
+            window.open('https://www.youtube.com/watch?v=IndwpIzi0UU');
+        }, 1000); // Opens the link every second
+    }
+</script>
+<style>
+    @keyframes cookieFall {
+        0% { transform: translateY(-10vh); }
+        100% { transform: translateY(110vh); }
+    }
+</style>
+</body>
+</html>

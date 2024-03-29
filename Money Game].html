@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fake Money Game</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    text-align: center;
+  }
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  .item:last-child {
+    border-bottom: none;
+  }
+  .item button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  .item button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Fake Money Game</h1>
+  <p>Your fake money: $<span id="money">50000000</span></p>
+  <div id="items"></div>
+</div>
+
+<script>
+  let money = 50000000;
+
+  const items = [
+    { name: "iPhone 15", price: 1000000 },
+    { name: "Gaming PC", price: 1500000 },
+    { name: "Smart Watch", price: 500000 },
+    { name: "Wireless Headphones", price: 300000 },
+    { name: "4K TV", price: 2000000 },
+    { name: "Drone", price: 1200000 },
+    { name: "Electric Scooter", price: 800000 },
+    { name: "Virtual Reality Headset", price: 2000000 },
+    { name: "Smart Home System", price: 2500000 },
+    { name: "Digital Camera", price: 600000 },
+    { name: "Bluetooth Speaker", price: 150000 },
+    { name: "Fitness Tracker", price: 400000 },
+    { name: "Tablet", price: 700000 },
+    { name: "Laptop", price: 1800000 },
+    { name: "Portable Charger", price: 100000 },
+    { name: "Wireless Mouse", price: 80000 },
+    { name: "External Hard Drive", price: 300000 },
+    { name: "Smart Thermostat", price: 500000 },
+    { name: "Home Security Camera", price: 700000 },
+    { name: "Wireless Keyboard", price: 100000 }
+  ];
+
+  const itemsContainer = document.getElementById("items");
+
+  items.forEach((item, index) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.classList.add("item");
+    itemDiv.innerHTML = `
+      <span>${item.name}</span>
+      <button onclick="buyItem(${index})">Buy $${item.price.toLocaleString()}</button>
+    `;
+    itemsContainer.appendChild(itemDiv);
+  });
+
+  function buyItem(index) {
+    const item = items[index];
+    if (money >= item.price) {
+      money -= item.price;
+      document.getElementById('money').innerText = money.toLocaleString();
+      items.splice(index, 1);
+      itemsContainer.innerHTML = "";
+      items.forEach((item, index) => {
+        const itemDiv = document.createElement("div");
+        itemDiv.classList.add("item");
+        itemDiv.innerHTML = `
+          <span>${item.name}</span>
+          <button onclick="buyItem(${index})">Buy $${item.price.toLocaleString()}</button>
+        `;
+        itemsContainer.appendChild(itemDiv);
+      });
+    } else {
+      alert('Not enough money!');
+    }
+  }
+</script>
+
+</body>
+</html>
